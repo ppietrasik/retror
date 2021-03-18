@@ -1,6 +1,6 @@
 require:
-  - rubocop-rspec
   - rubocop-rails
+  - rubocop-rspec
 
 AllCops:
   TargetRubyVersion: 3.0
@@ -48,3 +48,10 @@ Style/Documentation:
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: single_quotes
+
+Metrics/BlockLength:
+  IgnoredMethods: ['describe', 'context']
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - spec/**/*.rb
