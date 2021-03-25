@@ -13,6 +13,23 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div class="bg-white min-h-screen">
+
+      <%= render "shared/navigation" %>
+
+      <header class="pb-32 py-10">
+        <div class="w-10/12 mx-auto px-8">
+          <h1 class="text-3xl leading-9 font-bold text-gray-900">
+            <%= yield :header %>
+          </h1>
+        </div>
+      </header>
+
+      <main class="-mt-32">
+        <div class="w-10/12 mx-auto">
+          <%= yield %>
+        </div>
+      </main>
+    </div>
   </body>
 </html>
