@@ -1,4 +1,7 @@
-ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag|
+# frozen_string_literal: true
+
+# rubocop:disable Rails/OutputSafety
+ActionView::Base.field_error_proc = proc do |html_tag, instance_tag|
   fragment = Nokogiri::HTML.fragment(html_tag)
   field = fragment.at('input,select,textarea')
 
@@ -8,7 +11,7 @@ ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag|
   html = if field
            field['class'] = "#{field['class']} invalid"
            html = <<-HTML
-              #{fragment.to_s}
+              #{fragment}
               <p class="error">#{error_message}</p>
            HTML
            html
@@ -18,3 +21,4 @@ ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag|
 
   html.html_safe
 end
+# rubocop:enable Rails/OutputSafety
