@@ -15,12 +15,15 @@ module.exports = {
       spacing: {
         108: '27rem',
         120: '30rem',
+      },
+      screens: {
+        '3xl': '1920px',
+      },
+      minWidth: { 
+        80: '20rem',
       }
     },
-    colors: { ...colors },
-    minWidth: { 
-      80: '20rem',
-    }
+    colors: { ...colors }
   },
   variants: {
     extend: {},
