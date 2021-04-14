@@ -12,7 +12,7 @@ describe 'Boards -> New' do
     click_on 'Create'
   end
 
-  it 'creates new board' do
+  it 'allows to creates new board' do
     expect { subject }.to change { Board.count }.from(0).to(1)
 
     expect(page).to have_text 'My Board'
