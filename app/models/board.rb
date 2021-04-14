@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Board < ApplicationRecord
-  validates :name, length: { in: 4..32 }, presence: true
+  validates :name, length: { maximum: 32 }, allow_blank: true
 
   has_many :lists, dependent: :destroy
 end

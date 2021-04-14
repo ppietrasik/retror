@@ -3,7 +3,11 @@
 class BoardsController < ApplicationController
   before_action :set_board, only: :show
 
-  def show; end
+  attr_reader :board
+
+  def show
+    render locals: { board: board }
+  end
 
   def new
     @board = Board.new
@@ -12,8 +16,8 @@ class BoardsController < ApplicationController
   def create
     @board = Board.new(board_params)
 
-    if @board.save
-      redirect_to @board
+    if board.save
+      redirect_to board
     else
       render :new
     end
