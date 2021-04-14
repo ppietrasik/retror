@@ -4,6 +4,30 @@
 @import 'tailwindcss/utilities';
 
 @layer components {
+  .list-scroll {
+    position: relative;
+  }
+  
+  .list-scroll:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to left, rgba(0,0,0,0) 98%, #FFF 100%);
+    pointer-events: none;
+  }
+  
+  .list-scroll:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to right, rgba(0,0,0,0) 98%, #FFF 100%);
+    pointer-events: none;
+  }
+
   input.default {
     @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
   }
