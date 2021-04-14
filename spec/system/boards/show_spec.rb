@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'system_helper'
-
 describe 'Boards -> Show' do
   let(:board) { create(:board, name: name) }
   let(:name) { 'My Board' }

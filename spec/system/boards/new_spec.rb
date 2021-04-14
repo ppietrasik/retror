@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'system_helper'
-
 describe 'Boards -> New' do
   let(:name) { 'My Board' }
 

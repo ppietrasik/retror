@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "rails_helper"
 require "capybara/cuprite"
 
 Capybara.register_driver(:cuprite) do |app|
@@ -16,6 +15,14 @@ RSpec.configure do |config|
 
   # Asset precompilation
   config.before(:suite) do
+    examples = RSpec.world.filtered_examples.values.flatten
+    has_no_system_tests = examples.none? { |example| example.metadata[:type] == :system }
+
+    if has_no_system_tests
+      $stdout.puts "\n🚀️️  No system test selected. Skip assets compilation.\n"
+      next
+    end
+    
     if Webpacker.dev_server.running?
       $stdout.puts "\n⚙️  Webpack dev server is running! Skip assets compilation.\n"
       next
