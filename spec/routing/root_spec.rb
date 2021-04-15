@@ -6,5 +6,5 @@ require 'rails_helper'
 RSpec.describe 'Routes -> Root', type: :request do 
   subject { get root_path }
 
-  it { is_expected.to redirect_to(new_board_path) }
+  it { is_expected.to redirect_to('boards/new') }
 end
