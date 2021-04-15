@@ -3,6 +3,5 @@
 Rails.application.routes.draw do
   resources :boards, only: %i[new create show]
 
-  get '/boards', to: redirect(path: '/boards/new')
-  root 'boards#new'
+  root to: redirect(path: 'boards/new', status: 302)
 end
