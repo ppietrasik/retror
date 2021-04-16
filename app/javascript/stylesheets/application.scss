@@ -28,6 +28,10 @@
     pointer-events: none;
   }
 
+  input.name {
+    @apply px-1 block w-full rounded-md border-none bg-gray-100 focus:bg-white text-gray-700 font-semibold font-sans tracking-wide text-lg 3xl:text-xl
+  }
+
   input.default {
     @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
   }
