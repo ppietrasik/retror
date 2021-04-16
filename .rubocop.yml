@@ -51,6 +51,8 @@ Style/StringLiterals:
 
 Metrics/BlockLength:
   IgnoredMethods: ['describe', 'context']
+  Exclude:
+    - spec/support/*
 
 Style/FrozenStringLiteralComment:
   Exclude:
@@ -60,7 +62,6 @@ RSpec/DescribeClass:
   Exclude:
     - spec/requests/**/*
     - spec/system/**/*
-    
-Metrics/BlockLength:
-   Exclude:
-    - spec/support/*
+
+RSpec/NotToNot:
+  Enabled: false

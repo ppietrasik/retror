@@ -5,24 +5,29 @@ RSpec.describe 'POST /boards -> Create new board' do
 
   let(:params) { { board: { name: name } } }
 
-  context 'with valid parameters' do
-    let(:name) { 'abc' }
+  let(:name) { 'abc' }
 
-    it 'creates a new Board' do
-      expect { request }.to change(Board, :count).by(1)
-    end
+  it 'creates a new board' do
+    expect { request }.to change(Board, :count).from(0).to(1)
+  end
 
-    it 'redirects correctly' do
-      request
+  it 'creates board with proper values' do
+    request
 
-      expect(response).to redirect_to(board_url(Board.last))
-    end
+    created_board = Board.last
+    expect(created_board).to have_attributes(name: name)
+  end
+
+  it 'redirects correctly' do
+    request
+
+    expect(response).to redirect_to(board_url(Board.last))
   end
 
   context 'with too long name' do
     let(:name) { 'x' * 33 }
 
-    it 'does not create a new Board' do
+    it 'does not create a new board' do
       expect { request }.not_to change(Board, :count)
     end
 
