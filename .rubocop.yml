@@ -55,3 +55,12 @@ Metrics/BlockLength:
 Style/FrozenStringLiteralComment:
   Exclude:
     - spec/**/*.rb
+
+RSpec/DescribeClass:
+  Exclude:
+    - spec/requests/**/*
+    - spec/system/**/*
+    
+Metrics/BlockLength:
+   Exclude:
+    - spec/support/*

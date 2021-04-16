@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "capybara/cuprite"
+require 'capybara/cuprite'
 
 Capybara.register_driver(:cuprite) do |app|
   Capybara::Cuprite::Driver.new(app, window_size: [1600, 800])
@@ -22,7 +22,7 @@ RSpec.configure do |config|
       $stdout.puts "\n🚀️️  No system test selected. Skip assets compilation.\n"
       next
     end
-    
+
     if Webpacker.dev_server.running?
       $stdout.puts "\n⚙️  Webpack dev server is running! Skip assets compilation.\n"
       next
@@ -33,11 +33,11 @@ RSpec.configure do |config|
       start = Time.current
       begin
         # Silence Webpacker output
-        $stdout.reopen(File.new("/dev/null", "w"))
+        $stdout.reopen(File.new('/dev/null', 'w'))
 
-        require "rake"
+        require 'rake'
         Rails.application.load_tasks
-        Rake::Task["webpacker:compile"].execute
+        Rake::Task['webpacker:compile'].execute
       ensure
         $stdout.reopen(original_stdout)
         $stdout.puts "Finished in #{(Time.current - start).round(2)} seconds"

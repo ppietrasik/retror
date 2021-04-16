@@ -1,15 +1,13 @@
-# frozen_string_literal: true
+require 'rails_helper'
 
 describe 'Boards -> Show' do
+  subject(:visit_page) { visit board_path(board) }
+
   let(:board) { create(:board, name: name) }
   let(:name) { 'My Board' }
 
-  subject do
-    visit board_path(board)
-  end
-
   it 'displays existing board' do
-    subject
+    visit_page
 
     expect(page).to have_text 'My Board'
   end

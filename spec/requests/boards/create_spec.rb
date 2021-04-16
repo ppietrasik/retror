@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'POST /boards -> Create new board' do
-  subject { post '/boards', params: params }
+  subject(:request) { post '/boards', params: params }
 
   let(:params) { { board: { name: name } } }
 
@@ -9,11 +9,11 @@ RSpec.describe 'POST /boards -> Create new board' do
     let(:name) { 'abc' }
 
     it 'creates a new Board' do
-      expect { subject }.to change(Board, :count).by(1)
+      expect { request }.to change(Board, :count).by(1)
     end
 
     it 'redirects correctly' do
-      subject
+      request
 
       expect(response).to redirect_to(board_url(Board.last))
     end
@@ -23,12 +23,12 @@ RSpec.describe 'POST /boards -> Create new board' do
     let(:name) { 'x' * 33 }
 
     it 'does not create a new Board' do
-      expect { subject }.not_to change(Board, :count)
+      expect { request }.not_to change(Board, :count)
     end
 
     it 'renders correct template' do
-      subject
-  
+      request
+
       expect(response).to render_template(:new)
     end
   end
