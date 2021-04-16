@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
 class BoardsController < ApplicationController
-  before_action :set_board, only: :show
-
   attr_reader :board
 
   def show
-    render locals: { board: board }
+    @board = Board.find(params[:id])
+
+    render :show, locals: { board: board }
   end
 
   def new
     @board = Board.new
+
+    render :new, locals: { board: board }
   end
 
   def create
@@ -19,15 +21,11 @@ class BoardsController < ApplicationController
     if board.save
       redirect_to board
     else
-      render :new
+      render :new, locals: { board: board }
     end
   end
 
   private
-
-    def set_board
-      @board = Board.find(params[:id])
-    end
 
     def board_params
       params.require(:board).permit(:name)
