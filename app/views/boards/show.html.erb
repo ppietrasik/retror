@@ -2,7 +2,7 @@
   <%= board.name %>
 <% end %>
 
-<div class="list-scroll">
+<div data-controller="board" data-board-id-value="<%= board.id %>" class="list-scroll">
   <div class="flex overflow-x-auto bg-stripes bg-stripes-white rounded-md px-8 py-12 ">
 
     <div class="contents">
@@ -10,8 +10,8 @@
     </div>
 
     <div class="contents">
-      <form class="flex-1 max-w-lg min-w-80 rounded-md m-2">
-        <button class="w-full h-full min-h-96 group border-4 rounded-md border-dashed border-gray-300 hover:border-gray-400 transition ease-in duration-200 focus:outline-none">
+      <form data-action="board#createList" class="flex-1 max-w-lg min-w-80 rounded-md m-2">
+        <button id="createList" class="w-full h-full min-h-96 group border-4 rounded-md border-dashed border-gray-300 hover:border-gray-400 transition ease-in duration-200 focus:outline-none">
           <div class="flex items-center justify-center">
             <svg class="h-32 w-32 fill-current text-gray-300 group-hover:text-gray-400 transition ease-in duration-200" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
