@@ -11,6 +11,8 @@ module Api
         @list = List.new(**list_params, board: board)
 
         if list.save
+          broadcast_new_list # wip
+
           render json: ListBlueprint.render(list), status: :created
         else
           render json: { errors: list.errors.messages }, status: :bad_request
@@ -42,6 +44,11 @@ module Api
 
         def list_params
           params.permit(:name)
+        end
+
+        def broadcast_new_list
+          html = ApplicationController.render(partial: 'lists/list', layout: false, locals: { list: list })
+          BoardChannel.broadcast_to board, { id: "Board:#{board.id}", event: 'NewList', data: html }
         end
     end
   end

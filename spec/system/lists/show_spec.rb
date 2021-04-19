@@ -11,18 +11,19 @@ describe 'Board/Lists -> Show' do
   it 'displays existing list' do
     visit_page
 
-    expect(page).to have_text 'My List'
+    expect(page).to have_selector("input[value='My List']")
   end
 
   context 'with multiple lists' do
-    let(:second_list) { create(:list, board: board, name: second_list_name) }
     let(:second_list_name) { 'My Second List' }
+
+    before { create(:list, board: board, name: second_list_name) }
 
     it 'displays multiple existing lists', :aggregate_failures do
       visit_page
 
-      expect(page).to have_text 'My List'
-      expect(page).to have_text 'My Second List'
+      expect(page).to have_selector("input[value='My List']")
+      expect(page).to have_selector("input[value='My Second List']")
     end
   end
 end

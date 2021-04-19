@@ -65,3 +65,7 @@ RSpec/DescribeClass:
 
 RSpec/NotToNot:
   Enabled: false
+
+RSpec/ExampleLength:
+  Exclude:
+  - spec/system/**/*
