@@ -69,3 +69,9 @@ RSpec/NotToNot:
 RSpec/ExampleLength:
   Exclude:
   - spec/system/**/*
+
+RSpec/MessageSpies:
+  EnforcedStyle: receive
+
+Layout/IndentationConsistency:
+  EnforcedStyle: normal

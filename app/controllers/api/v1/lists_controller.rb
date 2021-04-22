@@ -38,18 +38,18 @@ module Api
 
       private
 
-        def set_board
-          @board = Board.find(params[:board_id])
-        end
+      def set_board
+        @board = Board.find(params[:board_id])
+      end
 
-        def list_params
-          params.permit(:name)
-        end
+      def list_params
+        params.permit(:name)
+      end
 
-        def broadcast_new_list
-          html = ApplicationController.render(partial: 'lists/list', layout: false, locals: { list: list })
-          BoardChannel.broadcast_to board, { id: "Board:#{board.id}", event: 'NewList', data: html }
-        end
+      def broadcast_new_list
+        html = ApplicationController.render(partial: 'lists/list', layout: false, locals: { list: list })
+        BoardChannel.broadcast_to board, { id: "Board:#{board.id}", event: 'NewList', data: html }
+      end
     end
   end
 end
