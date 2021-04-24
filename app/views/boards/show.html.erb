@@ -1,8 +1,14 @@
-<% content_for :header do %>
-  <%= board.name %>
+<% content_for :meta do %>
+  <%= tag('meta', name: 'stream-id', content: Stream.signed_id(board)) %>  
 <% end %>
 
-<div data-controller="board" data-board-id-value="<%= board.id %>" class="list-scroll">
+<% content_for :header do %>
+  <h1 class="text-3xl leading-9 font-bold text-gray-900">
+    <%= board.name %>  
+  </h1>
+<% end %>
+
+<div data-controller="board" data-board-id-value="<%= board.id %>" data-board-stream-tag-value="<%= board.stream_tag %>" class="list-scroll">
   <div class="flex overflow-x-auto bg-stripes bg-stripes-white rounded-md px-8 py-12 ">
 
     <div class="contents" data-board-target="lists">

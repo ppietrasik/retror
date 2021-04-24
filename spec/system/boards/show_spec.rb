@@ -11,4 +11,9 @@ describe 'Boards -> Show' do
 
     expect(page).to have_text 'My Board'
   end
+
+  it 'contains correct stream_id in metatag' do
+    board_stream_id = Stream.signed_id(board)
+    expect(page).to have_no_selector("meta[name='stream-id'][content='#{board_stream_id}']")
+  end
 end
