@@ -11,7 +11,7 @@ module Api
         @list = List.new(**list_params, board: board)
 
         if list.save
-          broadcast_new_list # wip
+          broadcast_new_list_event
 
           render json: ListBlueprint.render(list), status: :created
         else
@@ -46,9 +46,8 @@ module Api
         params.permit(:name)
       end
 
-      def broadcast_new_list
-        html = ApplicationController.render(partial: 'lists/list', layout: false, locals: { list: list })
-        BoardChannel.broadcast_to board, { id: "Board:#{board.id}", event: 'NewList', data: html }
+      def broadcast_new_list_event
+        Stream::RenderBroadcastJob.perform_later(board, board.stream_tag, 'NewList', partial: 'lists/list', locals: { list: list })
       end
     end
   end
