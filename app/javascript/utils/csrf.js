@@ -1,7 +1,3 @@
-const getCSRFAttribute = name => {
-  const element = document.head.querySelector(`meta[name="csrf-${name}"]`);
+import { getMetaAttribute } from "./meta_attribute";
 
-  return element?.getAttribute("content");
-};
-
-export const csrfToken = getCSRFAttribute("token");
+export const csrfToken = getMetaAttribute("csrf-token");

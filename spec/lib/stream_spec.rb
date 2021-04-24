@@ -44,10 +44,10 @@ RSpec.describe Stream do
     let(:msg_verifier) { ActiveSupport::MessageVerifier.new('key', digest: 'SHA256', serializer: JSON) }
 
     before do
-		  allow(described_class).to receive(:id).and_return(id)
+      allow(described_class).to receive(:id).and_return(id)
       allow(described_class).to receive(:stream_verifier).and_return(msg_verifier)
     end
-    
+
     it { is_expected.to eq(msg_verifier.generate(id)) }
   end
 

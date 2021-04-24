@@ -30,6 +30,15 @@ RSpec.describe 'POST /api/v1/boards/:board_id/lists -> Create new list' do
     expect(json_response).to match(list_object(created_list))
   end
 
+  it 'enqueues correct broadcast' do
+    request
+
+    created_list = List.last
+
+    expect(Stream::RenderBroadcastJob).to have_been_enqueued.with(board, board.stream_tag, 'NewList', partial: 'lists/list',
+                                                                                                      locals: { list: created_list })
+  end
+
   context 'with non-existing board_id' do
     let(:board_id) { "#{board.id}-a" }
 
