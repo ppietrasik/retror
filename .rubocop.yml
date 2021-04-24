@@ -30,11 +30,8 @@ AllCops:
     - '.git/**/*'
     - 'app/views/**/*'
 
-Layout/IndentationConsistency:
-  EnforcedStyle: 'indented_internal_methods'
-
 Layout/LineLength:
-  Max: 120
+  Max: 150
 
 Naming/FileName:
   Exclude:
@@ -72,6 +69,3 @@ RSpec/ExampleLength:
 
 RSpec/MessageSpies:
   EnforcedStyle: receive
-
-Layout/IndentationConsistency:
-  EnforcedStyle: normal
