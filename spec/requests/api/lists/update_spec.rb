@@ -30,6 +30,14 @@ RSpec.describe 'PATCH /api/v1/lists/:id -> Update the list' do
     expect { request }.to_not change(List, :count)
   end
 
+  it 'broadcasts correct message' do
+    allow(StreamChannel).to receive(:broadcast_message)
+    request
+
+    list = List.last
+    expect(StreamChannel).to have_received(:broadcast_message).with(list.board, list.stream_tag, 'UpdateList', { name: list.name })
+  end
+
   context 'with too long name param' do
     let(:name) { 'x' * 33 }
 
@@ -45,6 +53,12 @@ RSpec.describe 'PATCH /api/v1/lists/:id -> Update the list' do
 
       expect(response).to have_http_status(:bad_request)
       expect(json_response['errors']).to match({ 'name' => ['is too long (maximum is 24 characters)'] })
+    end
+
+    it 'does not broadcasts any message' do
+      expect(StreamChannel).not_to receive(:broadcast_message)
+
+      request
     end
   end
 

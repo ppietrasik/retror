@@ -68,4 +68,4 @@ RSpec/ExampleLength:
   - spec/system/**/*
 
 RSpec/MessageSpies:
-  EnforcedStyle: receive
+  Enabled: false

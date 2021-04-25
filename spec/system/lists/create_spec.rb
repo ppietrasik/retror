@@ -5,7 +5,7 @@ describe 'Board/Lists -> Create' do
     visit board_path(board)
 
     click_on 'createList'
-    sleep 0.5 # wait for websocket
+    sleep 0.1 # wait for websocket
   end
 
   let(:board) { create(:board) }

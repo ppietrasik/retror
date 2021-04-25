@@ -3,11 +3,10 @@
 module Api
   module V1
     class ListsController < BaseController
-      before_action :set_board, only: :create
-
       attr_reader :board, :list
 
       def create
+        @board = Board.find(params[:board_id])
         @list = List.new(**list_params, board: board)
 
         if list.save
@@ -23,6 +22,8 @@ module Api
         @list = List.find(params[:id])
 
         if list.update(**list_params)
+          broadcast_update_list_event
+
           render json: ListBlueprint.render(list)
         else
           render json: { errors: list.errors.messages }, status: :bad_request
@@ -38,16 +39,16 @@ module Api
 
       private
 
-      def set_board
-        @board = Board.find(params[:board_id])
-      end
-
       def list_params
         params.permit(:name)
       end
 
       def broadcast_new_list_event
         Stream::RenderBroadcastJob.perform_later(board, board.stream_tag, 'NewList', partial: 'lists/list', locals: { list: list })
+      end
+
+      def broadcast_update_list_event
+        StreamChannel.broadcast_message(list.board, list.stream_tag, 'UpdateList', { name: list.name })
       end
     end
   end

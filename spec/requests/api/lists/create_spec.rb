@@ -30,7 +30,7 @@ RSpec.describe 'POST /api/v1/boards/:board_id/lists -> Create new list' do
     expect(json_response).to match(list_object(created_list))
   end
 
-  it 'enqueues correct broadcast' do
+  it 'enqueues correct broadcast job' do
     request
 
     created_list = List.last
@@ -65,6 +65,10 @@ RSpec.describe 'POST /api/v1/boards/:board_id/lists -> Create new list' do
 
       expect(response).to have_http_status(:bad_request)
       expect(json_response['errors']).to match({ 'name' => ['is too long (maximum is 24 characters)'] })
+    end
+
+    it 'does not enqueues any job' do
+      expect { request }.not_to have_enqueued_job
     end
   end
 

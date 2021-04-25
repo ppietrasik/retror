@@ -1,10 +1,10 @@
 import { Controller } from "stimulus"
 import { postRequest } from "../utils/api_requests"
 import { getCreateListUrl } from "../utils/api_urls"
-import container from '../lib/container'
+import Container from '../lib/container'
 
 export default class extends Controller {
-  static values = { id: String };
+  static values = { id: String, streamTag: String };
   static targets = [ "lists" ];
 
   connect() {
@@ -18,10 +18,9 @@ export default class extends Controller {
     await postRequest(url, { name: "" });
   }
 
-  _registerEvents(){
-    const dispatcher = container.resolve('boardStreamListener').eventDispatcher;
-
-    dispatcher.register(`Board:${this.idValue}`, "NewList", data => this._onNewListEvent(data));
+  _registerEvents() {
+    const dispatcher = Container.resolve('boardStreamListener').eventDispatcher;
+    dispatcher.register(this.streamTagValue, "NewList", data => this._onNewListEvent(data));
   }
 
   _onNewListEvent(data) {
