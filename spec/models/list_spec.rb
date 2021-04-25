@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe List, type: :model do
+  let(:class_instance) { described_class.create(name: 'My list') }
+
   describe 'Validation' do
     it { is_expected.to allow_value('').for(:name) }
 
@@ -11,5 +13,11 @@ RSpec.describe List, type: :model do
     it { is_expected.to belong_to(:board) }
 
     it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false) }
+  end
+
+  describe '#stream_tag' do
+    subject(:metohd_call) { class_instance.stream_tag }
+
+    it { is_expected.to eq("List:#{class_instance.id}") }
   end
 end
