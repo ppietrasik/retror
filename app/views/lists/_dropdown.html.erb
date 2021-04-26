@@ -1,0 +1,11 @@
+<div data-controller="dropdown" data-action="click@window->dropdown#clear" class="relative inline-block text-left">
+  <button id="dropdownList" data-action="dropdown#toggle" data-dropdown-target="ignored" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600">
+    <svg data-dropdown-target="ignored" class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+      <path data-dropdown-target="ignored" d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+    </svg>
+  </button>
+
+  <div data-dropdown-target="container" class="hidden origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white py-1">
+    <%= yield %>
+  </div>
+</div>
