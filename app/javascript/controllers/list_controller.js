@@ -1,6 +1,6 @@
 import { Controller } from "stimulus"
-import { patchRequest } from "../utils/api_requests"
-import { getUpdateListUrl } from "../utils/api_urls";
+import { deleteRequest, patchRequest } from "../utils/api_requests"
+import { getListUrl } from "../utils/api_urls";
 import Container from '../lib/container'
 
 const SUBMIT_EVENT_TYPE = "submit";
@@ -19,8 +19,15 @@ export default class extends Controller {
       return;
     }
 
-    const url = getUpdateListUrl(this.idValue);
+    const url = getListUrl(this.idValue);
     await patchRequest(url, { name: this.nameValue });
+  }
+
+  async delete(event) {
+    event.preventDefault();
+
+    const url = getListUrl(this.idValue);
+    await deleteRequest(url);
   }
 
   get nameValue() {
@@ -33,10 +40,16 @@ export default class extends Controller {
 
   _registerEvents() {
     const dispatcher = Container.resolve('boardStreamListener').eventDispatcher;
+
     dispatcher.register(this.streamTagValue, "UpdateList", data => this._onUpdateListEvent(data));
+    dispatcher.register(this.streamTagValue, "DeleteList", _ => this._onDeleteListEvent());
   }
 
   _onUpdateListEvent({ name }) {
     this.nameValue = name;
+  }
+
+  _onDeleteListEvent() {
+    this.element.remove();
   }
 }

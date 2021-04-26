@@ -2,13 +2,13 @@ require 'rails_helper'
 
 describe 'Board/Lists -> Create' do
   subject(:press_create) do
-    visit board_path(board)
-
     click_on 'createList'
     sleep 0.1 # wait for websocket
   end
 
   let(:board) { create(:board) }
+
+  before { visit board_path(board) }
 
   it 'creates new list' do
     expect { press_create }.to change(List, :count).from(0).to(1)

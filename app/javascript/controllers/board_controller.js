@@ -20,6 +20,7 @@ export default class extends Controller {
 
   _registerEvents() {
     const dispatcher = Container.resolve('boardStreamListener').eventDispatcher;
+    
     dispatcher.register(this.streamTagValue, "NewList", data => this._onNewListEvent(data));
   }
 

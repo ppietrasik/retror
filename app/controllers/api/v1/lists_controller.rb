@@ -32,7 +32,9 @@ module Api
 
       def destroy
         @list = List.find(params[:id])
+
         list.destroy
+        broadcast_delete_list_event
 
         head :no_content
       end
@@ -49,6 +51,10 @@ module Api
 
       def broadcast_update_list_event
         StreamChannel.broadcast_message(list.board, list.stream_tag, 'UpdateList', { name: list.name })
+      end
+
+      def broadcast_delete_list_event
+        StreamChannel.broadcast_message(list.board, list.stream_tag, 'DeleteList', nil)
       end
     end
   end

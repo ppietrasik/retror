@@ -20,6 +20,12 @@ class RequestError extends Error {
   }
 }
 
+const isResponseJson = response => {
+  const contentType = response.headers.get('content-type');
+
+  return contentType?.includes('application/json');
+ };
+
 const request = async (url, method, body) => {
   const response = await fetch(url, {
     method,
@@ -33,9 +39,8 @@ const request = async (url, method, body) => {
     body
   });
 
-  if (!response.ok) {
-    throw new RequestError(response);
-  }
+  if (!response.ok) throw new RequestError(response);
+  if (!isResponseJson(response)) return new Object();
 
   return await response.json();
 }

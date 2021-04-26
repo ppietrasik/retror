@@ -17,6 +17,13 @@ RSpec.describe 'DELETE /api/v1/lists/:id -> Destroy the list' do
     expect(response.body).to be_empty
   end
 
+  it 'broadcasts correct message' do
+    allow(StreamChannel).to receive(:broadcast_message)
+    request
+
+    expect(StreamChannel).to have_received(:broadcast_message).with(list.board, list.stream_tag, 'DeleteList', nil)
+  end
+
   context 'with non-existing id' do
     let(:id) { "#{list.id}-a" }
 

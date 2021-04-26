@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe 'Board/Lists -> Update' do
   subject(:update_list) do
-    visit board_path(board)
     name_input = find('#listName')
 
     name_input.click
@@ -17,6 +16,8 @@ describe 'Board/Lists -> Update' do
 
   let(:new_name) { 'Updated name' }
 
+  before { visit board_path(board) }
+
   it 'update the list' do
     update_list
 
@@ -25,10 +26,9 @@ describe 'Board/Lists -> Update' do
   end
 
   it "updates list's name in dom" do
-    update_list
-
     name_input = find('#listName')
-    expect(name_input.value).to eq(new_name)
+
+    expect { update_list }.to change(name_input, :value).from('Old name').to(new_name)
   end
 
   context 'with second widow open' do
