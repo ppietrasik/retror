@@ -14,6 +14,7 @@ gem 'rails', '~> 6.1.3'
 gem 'redis', '~> 4.0'
 gem 'webpacker', '~> 5.0'
 
+gem 'acts_as_list', '~> 1.0', '>= 1.0.4'
 gem 'blueprinter'
 
 group :development, :test do
