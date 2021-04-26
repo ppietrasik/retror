@@ -13,6 +13,8 @@ RSpec.describe List, type: :model do
     it { is_expected.to belong_to(:board) }
 
     it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false) }
+
+    it { is_expected.to have_db_index(%i[board_id position]).unique(true) }
   end
 
   describe '#stream_tag' do
