@@ -38,5 +38,6 @@ module Retror
     config.generators.system_tests = nil
 
     config.eager_load_paths << Rails.root.join('lib')
+    config.active_record.schema_format = :sql
   end
 end
