@@ -16,6 +16,7 @@ gem 'webpacker', '~> 5.0'
 
 gem 'acts_as_list', '~> 1.0', '>= 1.0.4'
 gem 'blueprinter'
+gem 'dry-validation', '~> 1.6'
 
 group :development, :test do
   gem 'factory_bot_rails'
