@@ -1,0 +1,6 @@
+en:
+  retror:
+    errors:
+      rules:
+        position:
+          invalid: 'must be lower than or equal to the last position'

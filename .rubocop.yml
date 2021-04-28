@@ -33,6 +33,9 @@ AllCops:
 Layout/LineLength:
   Max: 150
 
+Metrics/AbcSize:
+  Max: 20
+
 Naming/FileName:
   Exclude:
     - 'Gemfile'
@@ -69,3 +72,10 @@ RSpec/ExampleLength:
 
 RSpec/MessageSpies:
   Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+Naming/VariableNumber:
+  Exclude:
+  - spec/**/*.rb

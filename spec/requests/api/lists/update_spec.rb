@@ -3,18 +3,43 @@ require 'rails_helper'
 RSpec.describe 'PATCH /api/v1/lists/:id -> Update the list' do
   subject(:request) { patch "/api/v1/lists/#{id}", params: params }
 
-  let(:params) { { name: name } }
+  let(:id) { list.id }
+  let(:params) { { name: name, position: position } }
 
   let!(:list) { create(:list, name: 'Existing list name') }
-  let(:id) { list.id }
+  let!(:next_list) { create(:list, board: list.board) }
 
   let(:name) { 'New name' }
+  let(:position) { next_list.position }
+
+  shared_examples_for 'invalid request' do
+    it 'does not perform the update', :aggregate_failures do
+      before_attributes = list.attributes
+
+      request
+
+      current_list = list.reload
+      expect(current_list).to have_attributes(**before_attributes)
+    end
+
+    it 'returns proper status' do
+      request
+
+      expect(response).to have_http_status(:bad_request)
+    end
+
+    it 'does not broadcasts any message' do
+      expect(StreamChannel).not_to receive(:broadcast_message)
+
+      request
+    end
+  end
 
   it 'updates the list with proper values' do
     request
 
     updated_list = list.reload
-    expect(updated_list).to have_attributes(name: name)
+    expect(updated_list).to have_attributes(name: name, position: position)
   end
 
   it 'returns proper response', :aggregate_failures do
@@ -34,31 +59,44 @@ RSpec.describe 'PATCH /api/v1/lists/:id -> Update the list' do
     allow(StreamChannel).to receive(:broadcast_message)
     request
 
-    list = List.last
-    expect(StreamChannel).to have_received(:broadcast_message).with(list.board, list.stream_tag, 'UpdateList', { name: list.name })
+    updated_list = list.reload
+    data = { name: updated_list.name, position: updated_list.position }
+    expect(StreamChannel).to have_received(:broadcast_message).with(updated_list.board, updated_list.stream_tag, 'UpdateList', data)
   end
 
   context 'with too long name param' do
-    let(:name) { 'x' * 33 }
+    let(:name) { 'x' * 25 }
 
-    it 'does not perform the update', :aggregate_failures do
+    it_behaves_like 'invalid request'
+
+    it 'returns proper response' do
       request
 
-      current_list = list.reload
-      expect(current_list).not_to have_attributes(name: name)
+      expect(json_response['errors']).to match({ 'name' => ['size cannot be greater than 24'] })
     end
+  end
 
-    it 'returns proper response', :aggregate_failures do
+  context 'with too higher position param' do
+    let(:position) { next_list.position + 1 }
+
+    it_behaves_like 'invalid request'
+
+    it 'returns proper response' do
       request
 
-      expect(response).to have_http_status(:bad_request)
-      expect(json_response['errors']).to match({ 'name' => ['is too long (maximum is 24 characters)'] })
+      expect(json_response['errors']).to match({ 'position' => ['must be lower than or equal to the last position'] })
     end
+  end
 
-    it 'does not broadcasts any message' do
-      expect(StreamChannel).not_to receive(:broadcast_message)
+  context 'with too low position param' do
+    let(:position) { -1 }
 
+    it_behaves_like 'invalid request'
+
+    it 'returns proper response' do
       request
+
+      expect(json_response['errors']).to match({ 'position' => ['must be greater than or equal to 0'] })
     end
   end
 
@@ -75,7 +113,8 @@ RSpec.describe 'PATCH /api/v1/lists/:id -> Update the list' do
   def list_object(list)
     {
       'id' => list.id,
-      'name' => list.name
+      'name' => list.name,
+      'position' => list.position
     }
   end
 end

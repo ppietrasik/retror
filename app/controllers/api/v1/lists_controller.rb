@@ -21,12 +21,16 @@ module Api
       def update
         @list = List.find(params[:id])
 
-        if list.update(**list_params)
+        contract = Lists::UpdateContract.new(board: list.board)
+        result = contract.call(**list_params)
+
+        if result.success?
+          list.update(list_params)
           broadcast_update_list_event
 
           render json: ListBlueprint.render(list)
         else
-          render json: { errors: list.errors.messages }, status: :bad_request
+          render json: { errors: result.errors.to_h }, status: :bad_request
         end
       end
 
@@ -42,15 +46,17 @@ module Api
       private
 
       def list_params
-        params.permit(:name)
+        params.permit(:name, :position)
       end
 
       def broadcast_new_list_event
-        Stream::RenderBroadcastJob.perform_later(board, board.stream_tag, 'NewList', partial: 'lists/list', locals: { list: list })
+        renderings = { partial: 'lists/list', locals: { list: list } }
+        Stream::RenderBroadcastJob.perform_later(board, board.stream_tag, 'NewList', **renderings)
       end
 
       def broadcast_update_list_event
-        StreamChannel.broadcast_message(list.board, list.stream_tag, 'UpdateList', { name: list.name })
+        data = { name: list.name, position: list.position }
+        StreamChannel.broadcast_message(list.board, list.stream_tag, 'UpdateList', data)
       end
 
       def broadcast_delete_list_event

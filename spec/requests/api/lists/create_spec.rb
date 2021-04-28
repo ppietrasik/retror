@@ -34,9 +34,8 @@ RSpec.describe 'POST /api/v1/boards/:board_id/lists -> Create new list' do
     request
 
     created_list = List.last
-
-    expect(Stream::RenderBroadcastJob).to have_been_enqueued.with(board, board.stream_tag, 'NewList', partial: 'lists/list',
-                                                                                                      locals: { list: created_list })
+    renderings = { partial: 'lists/list', locals: { list: created_list } }
+    expect(Stream::RenderBroadcastJob).to have_been_enqueued.with(board, board.stream_tag, 'NewList', renderings)
   end
 
   context 'with non-existing board_id' do
@@ -75,7 +74,8 @@ RSpec.describe 'POST /api/v1/boards/:board_id/lists -> Create new list' do
   def list_object(list)
     {
       'id' => list.id,
-      'name' => list.name
+      'name' => list.name,
+      'position' => list.position
     }
   end
 end
