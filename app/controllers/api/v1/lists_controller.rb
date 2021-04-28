@@ -7,14 +7,16 @@ module Api
 
       def create
         @board = Board.find(params[:board_id])
-        @list = List.new(**list_params, board: board)
 
-        if list.save
+        result = Lists::CreateContract.new.call(**list_create_params)
+
+        if result.success?
+          @list = List.create(**list_create_params, board: board)
           broadcast_new_list_event
 
           render json: ListBlueprint.render(list), status: :created
         else
-          render json: { errors: list.errors.messages }, status: :bad_request
+          render json: { errors: result.errors.to_h }, status: :bad_request
         end
       end
 
@@ -22,10 +24,10 @@ module Api
         @list = List.find(params[:id])
 
         contract = Lists::UpdateContract.new(board: list.board)
-        result = contract.call(**list_params)
+        result = contract.call(**list_update_params)
 
         if result.success?
-          list.update(list_params)
+          list.update(list_update_params)
           broadcast_update_list_event
 
           render json: ListBlueprint.render(list)
@@ -45,7 +47,11 @@ module Api
 
       private
 
-      def list_params
+      def list_create_params
+        params.permit(:name)
+      end
+
+      def list_update_params
         params.permit(:name, :position)
       end
 

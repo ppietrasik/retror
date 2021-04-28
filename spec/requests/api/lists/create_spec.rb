@@ -63,7 +63,7 @@ RSpec.describe 'POST /api/v1/boards/:board_id/lists -> Create new list' do
       request
 
       expect(response).to have_http_status(:bad_request)
-      expect(json_response['errors']).to match({ 'name' => ['is too long (maximum is 24 characters)'] })
+      expect(json_response['errors']).to match({ 'name' => ['size cannot be greater than 24'] })
     end
 
     it 'does not enqueues any job' do

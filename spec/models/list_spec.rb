@@ -3,12 +3,6 @@ require 'rails_helper'
 RSpec.describe List, type: :model do
   let(:class_instance) { described_class.create(name: 'My list') }
 
-  describe 'Validation' do
-    it { is_expected.to allow_value('').for(:name) }
-
-    it { is_expected.to validate_length_of(:name).is_at_most(24) }
-  end
-
   describe 'DB' do
     it { is_expected.to belong_to(:board) }
 
