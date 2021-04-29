@@ -43,4 +43,8 @@
   p.error {
     @apply mt-2 text-sm text-red-600;
   }
+
+  .sortable-ghost {
+    @apply border-2 border-blue-500 border-opacity-75
+  }
 }

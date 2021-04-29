@@ -11,8 +11,12 @@ export class EventDispatcher {
     this.listeners.get(identifier, event)?.delete(fn);
   }
 
-  unregisterAll(identifier, event) {
+  unregisterEvent(identifier, event) {
     this.listeners.get(identifier, event)?.clear();
+  }
+
+  unregisterIdentifier(identifier) {
+    this.listeners.get(identifier)?.clear();
   }
 
   dispatch(identifier, event, data) {

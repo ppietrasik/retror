@@ -1,7 +1,8 @@
 import { Controller } from "stimulus"
 import { deleteRequest, patchRequest } from "../utils/api_requests"
 import { getListUrl } from "../utils/api_urls";
-import Container from '../lib/container'
+import Container from "../lib/container"
+import { moveElement } from "../utils/dom";
 
 const SUBMIT_EVENT_TYPE = "submit";
 
@@ -13,6 +14,11 @@ export default class extends Controller {
     this._registerEvents();
   }
 
+  disconnect() {
+    const dispatcher = Container.resolve("boardStreamListener").eventDispatcher;
+    dispatcher.unregisterIdentifier(this.streamTagValue);
+  }
+
   async updateName(event) {
     if(event.type === SUBMIT_EVENT_TYPE) {
       this.nameTarget.blur();
@@ -21,6 +27,11 @@ export default class extends Controller {
 
     const url = getListUrl(this.idValue);
     await patchRequest(url, { name: this.nameValue });
+  }
+
+  async updatePosition(position) {
+    const url = getListUrl(this.idValue);
+    await patchRequest(url, { position: position });
   }
 
   async delete(event) {
@@ -39,14 +50,15 @@ export default class extends Controller {
   }
 
   _registerEvents() {
-    const dispatcher = Container.resolve('boardStreamListener').eventDispatcher;
+    const dispatcher = Container.resolve("boardStreamListener").eventDispatcher;
 
     dispatcher.register(this.streamTagValue, "UpdateList", data => this._onUpdateListEvent(data));
     dispatcher.register(this.streamTagValue, "DeleteList", _ => this._onDeleteListEvent());
   }
 
-  _onUpdateListEvent({ name }) {
+  _onUpdateListEvent({ name, position }) {
     this.nameValue = name;
+    moveElement(this.element, position);
   }
 
   _onDeleteListEvent() {
