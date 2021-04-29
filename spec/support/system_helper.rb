@@ -1,11 +1,16 @@
 # frozen_string_literal: true
 
-require 'capybara/cuprite'
+# Custom driver to change default window size
+Capybara.register_driver :custom_selenium_chrome_headless do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
+  options.add_argument('--headless')
+  options.add_argument('--disable-site-isolation-trials')
+  options.add_argument("--window-size=1600,800")
 
-Capybara.register_driver(:cuprite) do |app|
-  Capybara::Cuprite::Driver.new(app, window_size: [1600, 800])
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
-Capybara.javascript_driver = :cuprite
+
+Capybara.javascript_driver = :custom_selenium_chrome_headless 
 
 RSpec.configure do |config|
   # Ensure correct webdriver for systems specs
