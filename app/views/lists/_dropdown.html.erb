@@ -6,6 +6,10 @@
   </button>
 
   <div data-dropdown-target="container" class="hidden origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white py-1">
-    <%= yield %>
+    <form id="deleteList" data-action="list#delete" class="block py-2 leading-5 text-red-700 hover:bg-gray-100 hover:text-red-900 focus:outline-none focus:bg-gray-100 focus:text-red-900">
+      <button type="submit" class="text-left font-semibold w-full">
+        <div class="px-4">Delete</div>
+      </button>
+    </form>
   </div>
 </div>

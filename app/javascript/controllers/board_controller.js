@@ -11,7 +11,7 @@ export default class extends Controller {
   connect() {
     this._registerEvents();
     this.sortable = new Sortable(this.listsTarget, { 
-      onEnd: event => this._triggerPositionUpdate(event), 
+      onEnd: event => this._triggerPositionUpdate(event),
       direction: "horizontal",
       swapThreshold: 0.25,
       animation: 150
