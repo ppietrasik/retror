@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :boards, only: [], shallow: true do
-        resources :lists, only: %i[create destroy update]
+        resources :lists, only: %i[create destroy update] do
+          resources :cards, only: %i[create destroy update]
+        end
       end
     end
   end

@@ -61,7 +61,7 @@ RSpec.describe 'PATCH /api/v1/lists/:id -> Update the list' do
 
     updated_list = list.reload
     data = { name: updated_list.name, position: updated_list.position }
-    expect(StreamChannel).to have_received(:broadcast_message).with(updated_list.board, updated_list.stream_tag, 'UpdateList', data)
+    expect(StreamChannel).to have_received(:broadcast_message).with(list.board, list.stream_tag, 'UpdateList', data)
   end
 
   context 'with too long name param' do

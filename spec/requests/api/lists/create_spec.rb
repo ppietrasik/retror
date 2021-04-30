@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'POST /api/v1/boards/:board_id/lists -> Create new list' do
+RSpec.describe 'POST /api/v1/boards/:board_id/lists -> Create a new list' do
   subject(:request) { post "/api/v1/boards/#{board_id}/lists", params: params }
 
   let(:params) { { name: name } }
