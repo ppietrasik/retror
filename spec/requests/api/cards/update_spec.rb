@@ -4,10 +4,13 @@ RSpec.describe 'PATCH /api/v1/cards/:id -> Update the card' do
   subject(:request) { patch "/api/v1/cards/#{id}", params: params }
 
   let!(:card) { create(:card, note: 'Existing note') }
+  let!(:next_card) { create(:card, list: card.list) }
   let(:id) { card.id }
 
-  let(:params) { { note: note } }
+  let(:params) { { note: note, position: position } }
+
   let(:note) { 'New note' }
+  let(:position) { next_card.position }
 
   shared_examples_for 'invalid request' do
     it 'does not perform the update', :aggregate_failures do
@@ -36,7 +39,7 @@ RSpec.describe 'PATCH /api/v1/cards/:id -> Update the card' do
     request
 
     updated_card = card.reload
-    expect(updated_card).to have_attributes(note: note)
+    expect(updated_card).to have_attributes(note: note, position: position)
   end
 
   it 'returns proper response', :aggregate_failures do
@@ -57,7 +60,7 @@ RSpec.describe 'PATCH /api/v1/cards/:id -> Update the card' do
     request
 
     updated_card = card.reload
-    data = { note: updated_card.note }
+    data = { note: updated_card.note, position: updated_card.position }
     expect(StreamChannel).to have_received(:broadcast_message).with(card.board, card.stream_tag, 'UpdateCard', data)
   end
 
@@ -70,6 +73,30 @@ RSpec.describe 'PATCH /api/v1/cards/:id -> Update the card' do
       request
 
       expect(json_response['errors']).to match({ 'note' => ['size cannot be greater than 255'] })
+    end
+  end
+
+  context 'with too higher position param' do
+    let(:position) { next_card.position + 1 }
+
+    it_behaves_like 'invalid request'
+
+    it 'returns proper response' do
+      request
+
+      expect(json_response['errors']).to match({ 'position' => ['must be lower than or equal to the last position'] })
+    end
+  end
+
+  context 'with too low position param' do
+    let(:position) { -1 }
+
+    it_behaves_like 'invalid request'
+
+    it 'returns proper response' do
+      request
+
+      expect(json_response['errors']).to match({ 'position' => ['must be greater than or equal to 0'] })
     end
   end
 
@@ -86,7 +113,8 @@ RSpec.describe 'PATCH /api/v1/cards/:id -> Update the card' do
   def card_object(card)
     {
       'id' => card.id,
-      'note' => card.note
+      'note' => card.note,
+      'position' => card.position
     }
   end
 end

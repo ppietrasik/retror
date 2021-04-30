@@ -3,5 +3,5 @@
 class CardBlueprint < Blueprinter::Base
   identifier :id
 
-  fields :note
+  fields :note, :position
 end

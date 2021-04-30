@@ -19,4 +19,16 @@ RSpec.describe List, type: :model do
 
     it { is_expected.to eq("List:#{class_instance.id}") }
   end
+
+  describe '#cards' do
+    subject(:metohd_call) { class_instance.cards }
+
+    let!(:card_1) { create(:card, list: class_instance, position: 2) }
+    let!(:card_2) { create(:card, list: class_instance, position: 1) }
+    let!(:card_3) { create(:card, list: class_instance, position: 3) }
+
+    it 'returns cards in the correct order' do
+      expect(metohd_call).to match_array [card_2, card_1, card_3]
+    end
+  end
 end

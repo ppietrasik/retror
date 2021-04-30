@@ -74,7 +74,8 @@ RSpec.describe 'POST /api/v1/lists/:list_id/cards -> Create a new card' do
   def card_object(card)
     {
       'id' => card.id,
-      'note' => card.note
+      'note' => card.note,
+      'position' => card.position
     }
   end
 end

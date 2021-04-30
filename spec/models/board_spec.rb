@@ -28,7 +28,7 @@ RSpec.describe Board, type: :model do
     let!(:list_2) { create(:list, board: class_instance, position: 1) }
     let!(:list_3) { create(:list, board: class_instance, position: 3) }
 
-    it 'returns lists in correct order' do
+    it 'returns lists in the correct order' do
       expect(metohd_call).to match_array [list_2, list_1, list_3]
     end
   end

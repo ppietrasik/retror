@@ -60,7 +60,8 @@ CREATE TABLE public.cards (
     list_id uuid NOT NULL,
     note text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    "position" integer NOT NULL
 );
 
 
@@ -109,6 +110,14 @@ ALTER TABLE ONLY public.boards
 
 ALTER TABLE ONLY public.cards
     ADD CONSTRAINT cards_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cards cards_position; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cards
+    ADD CONSTRAINT cards_position UNIQUE (list_id, "position") DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -178,6 +187,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210325185006'),
 ('20210426221007'),
 ('20210426221342'),
-('20210430195922');
+('20210430195922'),
+('20210430222731'),
+('20210430222846');
 
 
