@@ -10,7 +10,7 @@ RSpec.describe Board, type: :model do
   end
 
   describe 'DB' do
-    it { is_expected.to have_many(:lists).dependent(:destroy) }
+    it { is_expected.to have_many(:lists).inverse_of(:board).dependent(:destroy) }
 
     it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false) }
   end

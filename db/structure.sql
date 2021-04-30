@@ -52,6 +52,19 @@ CREATE TABLE public.boards (
 
 
 --
+-- Name: cards; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cards (
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    list_id uuid NOT NULL,
+    note text NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: lists; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -91,6 +104,14 @@ ALTER TABLE ONLY public.boards
 
 
 --
+-- Name: cards cards_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cards
+    ADD CONSTRAINT cards_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: lists lists_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -115,6 +136,13 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: index_cards_on_list_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cards_on_list_id ON public.cards USING btree (list_id);
+
+
+--
 -- Name: index_lists_on_board_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -130,6 +158,14 @@ ALTER TABLE ONLY public.lists
 
 
 --
+-- Name: cards fk_rails_11b32bc490; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cards
+    ADD CONSTRAINT fk_rails_11b32bc490 FOREIGN KEY (list_id) REFERENCES public.lists(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -141,6 +177,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210325182230'),
 ('20210325185006'),
 ('20210426221007'),
-('20210426221342');
+('20210426221342'),
+('20210430195922');
 
 
