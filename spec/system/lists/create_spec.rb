@@ -2,7 +2,9 @@ require 'rails_helper'
 
 describe 'Board/Lists -> Create' do
   subject(:press_create) do
-    click_on 'createList'
+    create_button = find("button[data-action='board#createList']")
+    create_button.click
+    
     sleep 0.1 # wait for websocket
   end
 

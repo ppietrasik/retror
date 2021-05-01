@@ -3,11 +3,11 @@ require 'rails_helper'
 describe 'Board/Lists -> Update' do
   describe 'Name' do
     subject(:update_name) do
-      name_input = find('#listName')
+      name_input_element = name_input
 
-      name_input.click
-      name_input.fill_in(with: new_name)
-      name_input.send_keys(:tab)
+      name_input_element.click
+      name_input_element.fill_in(with: new_name)
+      name_input_element.send_keys(:tab)
 
       sleep 0.1 # wait for websocket
     end
@@ -27,8 +27,6 @@ describe 'Board/Lists -> Update' do
     end
 
     it "updates list's name in dom" do
-      name_input = find('#listName')
-
       expect { update_name }.to change(name_input, :value).from('Old name').to(new_name)
     end
 
@@ -39,17 +37,19 @@ describe 'Board/Lists -> Update' do
         within_window second_window do
           visit board_path(board)
 
-          name_input = find('#listName')
           expect(name_input.value).to eq('Old name')
         end
 
         update_name
 
         within_window second_window do
-          name_input = find('#listName')
           expect(name_input.value).to eq(new_name)
         end
       end
+    end
+
+    def name_input
+      find("input[data-list-target='name']")
     end
   end
 

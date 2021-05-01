@@ -7,7 +7,7 @@ export default class extends Controller {
     this.containerTarget.classList.toggle("hidden");
   }
 
-  clear(event) {
+  hide(event) {
     const shouldHide = this.ignoredTargets.every(element => element != event.target);
 
     if(shouldHide) this.containerTarget.classList.add("hidden");

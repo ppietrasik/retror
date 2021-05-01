@@ -2,7 +2,9 @@ require 'rails_helper'
 
 describe 'Board/Lists -> Destroy' do
   subject(:destroy_list) do
-    click_on 'dropdownList'
+    dropdown_button = find("button[data-action='dropdown#toggle']")
+    dropdown_button.click
+    
     click_on 'Delete'
     sleep 0.1 # wait for websocket
   end

@@ -2,7 +2,7 @@
 
   <div class="flex space-x-3 pb-4">
     <form data-action="list#updateName focusout->list#updateName" class="flex-grow">
-      <input id="listName" data-list-target="name" placeholder="Fill the name here..." type="text" maxlength="24" class="name" value="<%= list.name %>">
+      <input data-list-target="name" placeholder="Fill the name here..." type="text" maxlength="24" class="name" value="<%= list.name %>">
     </form>
 
     <%= render 'lists/dropdown' %>
