@@ -8,7 +8,7 @@ const SUBMIT_EVENT_TYPE = "submit";
 
 export default class extends Controller {
   static values = { id: String, streamTag: String };
-  static targets = [ "name" ];
+  static targets = [ "name", "cards" ];
 
   connect() {
     this._registerEvents();
@@ -54,6 +54,7 @@ export default class extends Controller {
 
     dispatcher.register(this.streamTagValue, "UpdateList", data => this._onUpdateListEvent(data));
     dispatcher.register(this.streamTagValue, "DeleteList", _ => this._onDeleteListEvent());
+    dispatcher.register(this.streamTagValue, "NewCard", data => this._onNewCardEvent(data));
   }
 
   _onUpdateListEvent({ name, position }) {
@@ -63,5 +64,9 @@ export default class extends Controller {
 
   _onDeleteListEvent() {
     this.element.remove();
+  }
+
+  _onNewCardEvent(data) {
+    this.cardsTarget.insertAdjacentHTML("beforeend", data);
   }
 }
