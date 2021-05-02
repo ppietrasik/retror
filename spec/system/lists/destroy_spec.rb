@@ -14,7 +14,7 @@ describe 'Board/Lists -> Destroy' do
 
   before { visit board_path(board) }
 
-  it 'creates new list' do
+  it 'removes the list' do
     expect { destroy_list }.to change(List, :count).from(1).to(0)
   end
 
