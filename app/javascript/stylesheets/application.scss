@@ -28,8 +28,12 @@
     pointer-events: none;
   }
 
-  input.name {
-    @apply px-1 block w-full rounded-md border-none bg-gray-100 focus:bg-white text-gray-700 font-semibold font-sans tracking-wide text-lg 3xl:text-xl
+  input.list-name {
+    @apply px-1 block w-full rounded-md border-none focus:ring-2 focus:ring-blue-600 bg-gray-100 focus:bg-white text-gray-700 font-semibold font-sans tracking-wide text-lg 3xl:text-xl
+  }
+
+  input.list-name:read-only {
+    @apply focus:bg-gray-100
   }
 
   input.default {
@@ -46,5 +50,10 @@
 
   .sortable-ghost {
     @apply border-2 border-blue-500 border-opacity-75
+  }
+
+  input:read-only,
+  textarea:read-only, {
+    @apply focus:ring-opacity-0
   }
 }

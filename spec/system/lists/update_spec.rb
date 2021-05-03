@@ -5,7 +5,7 @@ describe 'Board/Lists -> Update' do
     subject(:update_name) do
       name_input_element = name_input
 
-      name_input_element.click
+      name_input_element.double_click
       name_input_element.fill_in(with: new_name)
       name_input_element.send_keys(:tab)
 

@@ -2,7 +2,7 @@ import { Controller } from "stimulus"
 import { deleteRequest, patchRequest } from "../utils/api_requests"
 import { getListUrl } from "../utils/api_urls";
 import Container from "../lib/container"
-import { moveElement } from "../utils/dom";
+import { moveElement, setReadOnlySwitch, moveCaretToTheEnd } from "../utils/dom";
 
 const SUBMIT_EVENT_TYPE = "submit";
 
@@ -11,12 +11,20 @@ export default class extends Controller {
   static targets = [ "name", "cards" ];
 
   connect() {
+    setReadOnlySwitch(this.nameTarget, "dblclick");
     this._registerEvents();
   }
 
   disconnect() {
     const dispatcher = Container.resolve("boardStreamListener").eventDispatcher;
     dispatcher.unregisterIdentifier(this.streamTagValue);
+  }
+
+  editName() {
+    this.nameTarget.readOnly = false;
+    this.nameTarget.focus();
+    
+    moveCaretToTheEnd(this.nameTarget);
   }
 
   async updateName(event) {
