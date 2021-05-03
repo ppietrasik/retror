@@ -10,7 +10,7 @@ module Lists
     end
 
     rule(:position) do
-      key.failure(:invalid) if key? && values[:position] > last_position
+      key.failure(:invalid) if key? && value > last_position
     end
 
     def last_position

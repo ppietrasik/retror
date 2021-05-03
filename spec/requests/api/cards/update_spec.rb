@@ -3,14 +3,39 @@ require 'rails_helper'
 RSpec.describe 'PATCH /api/v1/cards/:id -> Update the card' do
   subject(:request) { patch "/api/v1/cards/#{id}", params: params }
 
-  let!(:card) { create(:card, note: 'Existing note') }
-  let!(:next_card) { create(:card, list: card.list) }
-  let(:id) { card.id }
+  let(:list) { create(:list) }
+  let!(:card) { create(:card, list: list, note: 'Existing note') }
+  let!(:next_card) { create(:card, list: list) }
 
+  let(:id) { card.id }
   let(:params) { { note: note, position: position } }
 
   let(:note) { 'New note' }
   let(:position) { next_card.position }
+
+  shared_examples_for 'valid request' do
+    it 'returns proper response', :aggregate_failures do
+      request
+
+      updated_card = card.reload
+
+      expect(response).to have_http_status(:ok)
+      expect(json_response).to match(card_object(updated_card))
+    end
+
+    it 'does not create a new card' do
+      expect { request }.to_not change(Card, :count)
+    end
+
+    it 'broadcasts correct message' do
+      allow(StreamChannel).to receive(:broadcast_message)
+      request
+
+      updated_card = card.reload
+      data = { note: updated_card.note, position: updated_card.position, list_id: updated_card.list_id }
+      expect(StreamChannel).to have_received(:broadcast_message).with(card.board, card.stream_tag, 'UpdateCard', data)
+    end
+  end
 
   shared_examples_for 'invalid request' do
     it 'does not perform the update', :aggregate_failures do
@@ -35,6 +60,8 @@ RSpec.describe 'PATCH /api/v1/cards/:id -> Update the card' do
     end
   end
 
+  it_behaves_like 'valid request'
+
   it 'updates the card with proper values' do
     request
 
@@ -42,26 +69,47 @@ RSpec.describe 'PATCH /api/v1/cards/:id -> Update the card' do
     expect(updated_card).to have_attributes(note: note, position: position)
   end
 
-  it 'returns proper response', :aggregate_failures do
-    request
+  context 'when moving between lists' do
+    let(:params) { { position: position, list_id: list_id } }
 
-    updated_card = card.reload
+    let(:second_list) { create(:list, board: list.board) }
+    let!(:second_list_card) { create(:card, list: second_list) }
 
-    expect(response).to have_http_status(:ok)
-    expect(json_response).to match(card_object(updated_card))
-  end
+    let(:position) { second_list_card.position }
+    let(:list_id) { second_list.id }
 
-  it 'does not create a new card' do
-    expect { request }.to_not change(Card, :count)
-  end
+    it_behaves_like 'valid request'
 
-  it 'broadcasts correct message' do
-    allow(StreamChannel).to receive(:broadcast_message)
-    request
+    it 'updates the card with proper values' do
+      request
 
-    updated_card = card.reload
-    data = { note: updated_card.note, position: updated_card.position }
-    expect(StreamChannel).to have_received(:broadcast_message).with(card.board, card.stream_tag, 'UpdateCard', data)
+      updated_card = card.reload
+      expect(updated_card).to have_attributes(position: position, list_id: list_id)
+    end
+
+    context 'when list_id does not exsit' do
+      let(:list_id) { "#{second_list.id}-a" }
+
+      it_behaves_like 'invalid request'
+
+      it 'returns proper response' do
+        request
+
+        expect(json_response['errors']).to match({ 'list_id' => ['not found'] })
+      end
+    end
+
+    context 'when list_id comes from differet board' do
+      let(:second_list) { create(:list) }
+
+      it_behaves_like 'invalid request'
+
+      it 'returns proper response' do
+        request
+
+        expect(json_response['errors']).to match({ 'list_id' => ['must be from the same board'] })
+      end
+    end
   end
 
   context 'with too long name param' do

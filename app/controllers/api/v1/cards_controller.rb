@@ -23,7 +23,7 @@ module Api
       def update
         @card = Card.find(params[:id])
 
-        contract = Cards::UpdateContract.new(list: card.list)
+        contract = Cards::UpdateContract.new(card: card)
         result = contract.call(**card_update_params)
 
         if result.success?
@@ -52,7 +52,7 @@ module Api
       end
 
       def card_update_params
-        params.permit(:note, :position)
+        params.permit(:note, :position, :list_id)
       end
 
       def broadcast_new_card_event
@@ -61,7 +61,7 @@ module Api
       end
 
       def broadcast_update_card_event
-        data = { note: card.note, position: card.position }
+        data = { note: card.note, position: card.position, list_id: card.list_id }
         StreamChannel.broadcast_message(card.board, card.stream_tag, 'UpdateCard', data)
       end
 
