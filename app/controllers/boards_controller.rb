@@ -4,7 +4,7 @@ class BoardsController < ApplicationController
   attr_reader :board
 
   def show
-    @board = Board.find(params[:id])
+    @board = Board.includes(lists: :cards).find(params[:id])
 
     render :show, locals: { board: board }
   end
