@@ -5,10 +5,10 @@
 
     <%= render 'shared/dropdown' do %>
       <button data-action="card-edit#enterEditMode" class="text-left font-semibold w-full block py-2 leading-5 hover:bg-gray-100 focus:outline-none">
-        <div class="px-4">Edit</div>
+        <div class="px-4"><%= t '.edit' %></div>
       </button>
       <button data-action="card#delete" class="text-left font-semibold w-full block py-2 leading-5 text-red-700 hover:bg-gray-100 focus:outline-none">
-        <div class="px-4">Delete</div>
+        <div class="px-4"><%= t '.delete' %></div>
       </button>
     <% end %>
   </div>

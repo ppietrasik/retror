@@ -4,14 +4,14 @@
     <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
     </svg>
-    Write a card
+    <%= t '.write_button' %>
   </button>
 
   <form data-card-form-target="form" data-action="card-form#createNote" class="hidden py-2 border-b-2 border-gray-200">
     <textarea data-card-form-target="note" data-action="blur->card-form#hideForm" maxlength="255" class="rounded-md max-h-48 resize-none block w-full border-none focus:ring-2 focus:ring-blue-600 outline-none"></textarea>
     
     <div class="flex py-4 w-full justify-end">
-      <button type="submit" class="rounded-md focus:outline-none px-4 py-2 text-base font-medium text-white bg-blue-600 hover:bg-blue-700">Add</button>
+      <button type="submit" class="rounded-md focus:outline-none px-4 py-2 text-base font-medium text-white bg-blue-600 hover:bg-blue-700"><%= t '.add_button' %></button>
     </div>
   </form>
 </div>

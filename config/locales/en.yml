@@ -30,4 +30,19 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  boards:
+    new:
+      title: 'Create new retrospective session'
+      name_label: 'Name'
+      create_button: 'Create'
+  cards:
+    form:
+      write_button: 'Write a card'
+      add_button: 'Add'
+    card:
+      edit: 'Edit'
+      delete: 'Delete'
+  lists:
+    list:
+      edit: 'Edit'
+      delete: 'Delete'
