@@ -67,6 +67,7 @@ RSpec/NotToNot:
   Enabled: false
 
 RSpec/ExampleLength:
+  Max: 10
   Exclude:
   - spec/system/**/*
 

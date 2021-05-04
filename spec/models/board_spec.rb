@@ -4,7 +4,7 @@ RSpec.describe Board, type: :model do
   let(:class_instance) { described_class.create(name: 'My board') }
 
   describe 'Validation' do
-    it { is_expected.to allow_value('').for(:name) }
+    it { is_expected.not_to allow_value('').for(:name) }
 
     it { is_expected.to validate_length_of(:name).is_at_most(32) }
   end

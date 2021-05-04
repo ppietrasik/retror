@@ -16,7 +16,7 @@ class BoardsController < ApplicationController
   end
 
   def create
-    @board = Board.new(board_params)
+    @board = checked_default_setup? ? DefaultBoardBuilder.build(board_params) : Board.new(board_params)
 
     if board.save
       redirect_to board
@@ -29,5 +29,9 @@ class BoardsController < ApplicationController
 
   def board_params
     params.require(:board).permit(:name)
+  end
+
+  def checked_default_setup?
+    params[:board][:default_setup] == '1'
   end
 end
