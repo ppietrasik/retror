@@ -124,18 +124,6 @@ RSpec.describe 'PATCH /api/v1/cards/:id -> Update the card' do
     end
   end
 
-  context 'with too higher position param' do
-    let(:position) { next_card.position + 1 }
-
-    it_behaves_like 'invalid request'
-
-    it 'returns proper response' do
-      request
-
-      expect(json_response['errors']).to match({ 'position' => ['must be lower than or equal to the last position'] })
-    end
-  end
-
   context 'with too low position param' do
     let(:position) { -1 }
 

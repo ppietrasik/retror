@@ -23,8 +23,7 @@ module Api
       def update
         @list = List.find(params[:id])
 
-        contract = Lists::UpdateContract.new(board: list.board)
-        result = contract.call(**list_update_params)
+        result = Lists::UpdateContract.new.call(**list_update_params)
 
         if result.success?
           list.update(list_update_params)

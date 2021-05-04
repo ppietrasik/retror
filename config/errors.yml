@@ -2,8 +2,6 @@ en:
   retror:
     errors:
       rules:
-        position:
-          invalid: 'must be lower than or equal to the last position'
         list_id:
           invalid: 'must be from the same board'
           not_found: 'not found'

@@ -10,10 +10,6 @@ module Cards
       optional(:list_id).value(:string)
     end
 
-    rule(:position) do
-      key.failure(:invalid) if key? && value > last_position
-    end
-
     rule(:list_id) do
       if key?
         update_list = List.find_by(id: value)
@@ -24,10 +20,5 @@ module Cards
     end
 
     delegate :list, to: :card
-
-    def last_position
-      last_card = list.cards.last
-      last_card&.position || 0
-    end
   end
 end
