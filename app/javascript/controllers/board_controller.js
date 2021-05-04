@@ -10,6 +10,7 @@ export default class extends Controller {
 
   connect() {
     this._registerEvents();
+    
     this.sortable = new Sortable(this.listsTarget, { 
       onEnd: event => this._triggerPositionUpdate(event),
       direction: "horizontal",

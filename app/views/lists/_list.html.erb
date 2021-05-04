@@ -1,12 +1,12 @@
-<div data-controller="list" data-list-id-value="<%= list.id %>" data-list-stream-tag-value="<%= list.stream_tag %>" class="flex-1 max-w-lg min-w-80 rounded-md m-2 bg-gray-100 p-4">
+<div data-controller="list list-edit" data-list-id-value="<%= list.id %>" data-list-stream-tag-value="<%= list.stream_tag %>" class="flex-1 max-w-lg min-w-80 rounded-md m-2 bg-gray-100 p-4">
 
   <div class="flex space-x-3 pb-4">
-    <form data-action="list#updateName focusout->list#updateName" class="flex-grow">
-      <input data-list-target="name" placeholder="Fill the name here..." type="text" maxlength="24" class="list-name" value="<%= list.name %>" readonly>
+    <form data-action="list-edit#exitEditMode" class="flex-grow">
+      <input data-list-target="name" data-list-edit-target="name" placeholder="Fill the name here..." type="text" maxlength="24" class="list-name" value="<%= list.name %>" readonly>
     </form>
 
     <%= render 'shared/dropdown' do %>
-      <button data-action="list#editName" class="text-left font-semibold w-full block py-2 leading-5 hover:bg-gray-100 focus:outline-none">
+      <button data-action="list-edit#enterEditMode" class="text-left font-semibold w-full block py-2 leading-5 hover:bg-gray-100 focus:outline-none">
         <div class="px-4">Edit</div>
       </button>
       <button data-action="list#delete" class="text-left font-semibold w-full block py-2 leading-5 text-red-700 hover:bg-gray-100 focus:outline-none">

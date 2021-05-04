@@ -1,10 +1,10 @@
-<div data-controller="card" data-card-id-value="<%= card.id %>" data-card-stream-tag-value="<%= card.stream_tag %>" class="w-full rounded-md bg-white shadow-md p-2" >
+<div data-controller="card card-edit" data-card-id-value="<%= card.id %>" data-card-stream-tag-value="<%= card.stream_tag %>" data-card-edit-mode-value="false" class="w-full rounded-md bg-white shadow-md p-2" >
   
   <div class="flex space-x-1">
-    <textarea data-action="keydown->card#updateNote blur->card#updateNote" data-card-target="note" maxlength="255" class="p-2 max-h-48 rounded-md resize-none w-full border-none focus:ring-2 focus:ring-blue-600" readonly><%= card.note %></textarea>
+    <textarea data-action="keydown->card-edit#exitEditMode" data-card-target="note" data-card-edit-target="note" maxlength="255" class="p-2 max-h-48 rounded-md resize-none w-full border-none focus:ring-2 focus:ring-blue-600" readonly><%= card.note %></textarea>
 
     <%= render 'shared/dropdown' do %>
-      <button data-action="card#editNote" class="text-left font-semibold w-full block py-2 leading-5 hover:bg-gray-100 focus:outline-none">
+      <button data-action="card-edit#enterEditMode" class="text-left font-semibold w-full block py-2 leading-5 hover:bg-gray-100 focus:outline-none">
         <div class="px-4">Edit</div>
       </button>
       <button data-action="card#delete" class="text-left font-semibold w-full block py-2 leading-5 text-red-700 hover:bg-gray-100 focus:outline-none">

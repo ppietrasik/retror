@@ -2,16 +2,14 @@ import { Controller } from "stimulus"
 import { deleteRequest, patchRequest } from "../utils/api_requests"
 import { getListUrl } from "../utils/api_urls";
 import Container from "../lib/container"
-import { moveElement, setReadOnlySwitch, moveCaretToTheEnd } from "../utils/dom";
-
-const SUBMIT_EVENT_TYPE = "submit";
+import Sortable from "sortablejs" 
+import { moveElement } from "../utils/dom";
 
 export default class extends Controller {
   static values = { id: String, streamTag: String };
   static targets = [ "name", "cards" ];
 
   connect() {
-    setReadOnlySwitch(this.nameTarget, "dblclick");
     this._registerEvents();
   }
 
@@ -20,21 +18,9 @@ export default class extends Controller {
     dispatcher.unregisterIdentifier(this.streamTagValue);
   }
 
-  editName() {
-    this.nameTarget.readOnly = false;
-    this.nameTarget.focus();
-    
-    moveCaretToTheEnd(this.nameTarget);
-  }
-
-  async updateName(event) {
-    if(event.type === SUBMIT_EVENT_TYPE) {
-      this.nameTarget.blur();
-      return;
-    }
-
+  async updateName(name) {
     const url = getListUrl(this.idValue);
-    await patchRequest(url, { name: this.nameValue });
+    await patchRequest(url, { name: name });
   }
 
   async updatePosition(position) {
@@ -47,10 +33,6 @@ export default class extends Controller {
 
     const url = getListUrl(this.idValue);
     await deleteRequest(url);
-  }
-
-  get nameValue() {
-    return this.nameTarget.value;
   }
 
   set nameValue(name) {

@@ -44,6 +44,6 @@ describe 'Board/Lists -> Show' do
   end
 
   def find_list_by_index(index)
-    all("div[data-controller='list']")[index]
+    all("div[data-controller='list list-edit']")[index]
   end
 end

@@ -11,9 +11,4 @@ export const moveElement = (element, index) => {
   partent.insertBefore(element, referenceElement);
 };
 
-export const setReadOnlySwitch = (element, openEvent) => {
-  element.addEventListener(openEvent, _ => element.readOnly = false);
-  element.addEventListener("blur", _ => element.readOnly = true);
-};
-
 export const moveCaretToTheEnd = element => element.setSelectionRange(element.value.length, element.value.length);

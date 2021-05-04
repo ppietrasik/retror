@@ -1,21 +1,14 @@
-import autosize from 'autosize'
 import { deleteRequest, patchRequest } from "../utils/api_requests"
 import { getCardUrl } from "../utils/api_urls";
-import { setReadOnlySwitch, moveCaretToTheEnd }  from "../utils/dom";
+import { findListElement, moveElement }  from "../utils/dom";
 import Container from "../lib/container"
 import { Controller } from "stimulus"
-
-const SUBMIT_KEY = "Enter";
-const SUBMIT_EVENT_TYPE = "keydown";
 
 export default class extends Controller {
   static values = { id: String, streamTag: String };
   static targets = [ "note" ];
 
   connect() {
-    autosize(this.noteTarget);
-    setReadOnlySwitch(this.noteTarget, "dblclick");
-
     this._registerEvents();
   }
 
@@ -24,23 +17,9 @@ export default class extends Controller {
     dispatcher.unregisterIdentifier(this.streamTagValue);
   }
 
-  editNote() {
-    this.noteTarget.readOnly = false;
-    this.noteTarget.focus();
-
-    moveCaretToTheEnd(this.noteTarget);
-  }
-
-  async updateNote(event) {
-    if(event.type == SUBMIT_EVENT_TYPE) {
-      if(event.key !== SUBMIT_KEY || event.shiftKey) return;
-
-      this.noteTarget.blur();
-      return;
-    }
-
+  async updateNote(note) {
     const url = getCardUrl(this.idValue);
-    await patchRequest(url, { note: this.noteValue });
+    await patchRequest(url, { note: note });
   }
   
   async delete() {
@@ -48,8 +27,9 @@ export default class extends Controller {
     await deleteRequest(url);
   }
 
-  get noteValue() {
-    return this.noteTarget.value;
+  async updatePosition(position, listId) {
+    const url = getCardUrl(this.idValue);
+    await patchRequest(url, { position: position, list_id: listId });
   }
 
   set noteValue(note) {
