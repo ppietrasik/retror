@@ -43,8 +43,13 @@ export default class extends Controller {
     dispatcher.register(this.streamTagValue, "DeleteCard", _ => this._onDeleteCardEvent());
   }
 
-  _onUpdateCardEvent({ note, position }) {
+  _onUpdateCardEvent({ note, position, list_id }) {
     this.noteValue = note;
+
+    const listElement = findListElement(list_id);
+    const listController = this.application.getControllerForElementAndIdentifier(listElement, "list"); // WIP
+
+    moveElement(this.element, listController.cardsTarget, position);
   }
 
   _onDeleteCardEvent() {

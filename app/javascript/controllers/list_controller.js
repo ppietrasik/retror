@@ -11,6 +11,13 @@ export default class extends Controller {
 
   connect() {
     this._registerEvents();
+
+    this.sortable = new Sortable(this.cardsTarget, {
+      onEnd: event => this._triggerCardPositionUpdate(event),
+      group: 'cards',
+      swapThreshold: 0.25,
+      animation: 150
+    });
   }
 
   disconnect() {
@@ -49,7 +56,7 @@ export default class extends Controller {
 
   _onUpdateListEvent({ name, position }) {
     this.nameValue = name;
-    moveElement(this.element, position);
+    moveElement(this.element, this.element.parentNode, position);
   }
 
   _onDeleteListEvent() {
@@ -58,5 +65,17 @@ export default class extends Controller {
 
   _onNewCardEvent(data) {
     this.cardsTarget.insertAdjacentHTML("beforeend", data);
+  }
+
+  _triggerCardPositionUpdate(event) {
+    const cardElement = event.item;
+    const listElement = event.to.parentNode;
+    const newPosition = event.newIndex;
+
+    const listController = this.application.getControllerForElementAndIdentifier(listElement, "list");
+    const listId = listController.idValue;
+    const cardController = this.application.getControllerForElementAndIdentifier(cardElement, "card");
+
+    cardController.updatePosition(newPosition, listId); // WIP
   }
 }

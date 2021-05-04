@@ -1,14 +1,22 @@
 const getElementIndex = (element, parent) => Array.prototype.indexOf.call(parent.children, element);
 
-export const moveElement = (element, index) => {
-  const partent = element.parentNode;
-  const elementAtIndex = partent.children[index];
-  const currentIndex = getElementIndex(element, partent);
-  
-  if(currentIndex == index) return;
+export const moveElement = (element, parent, index) => {
+  const currentParent = element.parentNode;
+  const elementAtIndex = parent.children[index];
+  const currentIndex = getElementIndex(element, currentParent);
+  const sameParent = parent == currentParent;
 
-  const referenceElement = currentIndex > index ? elementAtIndex : elementAtIndex.nextSibling;
-  partent.insertBefore(element, referenceElement);
+  if(currentIndex == index && sameParent) return;
+
+  let referenceElement = elementAtIndex;
+
+  if(sameParent && index > currentIndex){
+    referenceElement = elementAtIndex.nextSibling;
+  }
+
+  parent.insertBefore(element, referenceElement);
 };
 
 export const moveCaretToTheEnd = element => element.setSelectionRange(element.value.length, element.value.length);
+
+export const findListElement = list_id => document.querySelector(`[data-list-id-value="${list_id}"]`);
