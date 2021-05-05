@@ -3,9 +3,18 @@
 <% end %>
 
 <% content_for :header do %>
-  <h1 class="text-3xl leading-9 font-bold text-gray-900">
-    <%= board.name %>  
-  </h1>
+  <div class="flex justify-between items-center px-2">
+    <h1 class="text-3xl leading-9 font-bold text-gray-900">
+      <%= board.name %>  
+    </h1>
+
+    <button data-controller="session-link" data-action="session-link#copy" class="flex space-x-1 h-12 w-56 rounded-md items-center justify-center font-medium text-lg bg-lightBlue-100 text-blue-600 hover:bg-lightBlue-200 hover:text-blue-700 focus:outline-none transition ease-in duration-200">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+      </svg>
+      <p>Copy session link</p>
+    </button>
+  </div>
 <% end %>
 
 <div data-controller="board" data-board-id-value="<%= board.id %>" data-board-stream-tag-value="<%= board.stream_tag %>" class="list-scroll">

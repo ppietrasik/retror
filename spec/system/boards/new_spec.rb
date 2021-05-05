@@ -30,7 +30,7 @@ describe 'Boards -> New' do
 
     it 'does not contains default setup lists', :aggregate_failures do
       press_create
-      
+
       expect(page).not_to have_selector("input[value='Start Doing']")
       expect(page).not_to have_selector("input[value='Stop Doing']")
       expect(page).not_to have_selector("input[value='Continue Doing']")
