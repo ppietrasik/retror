@@ -36,6 +36,8 @@ en:
       name_label: 'Name'
       create_button: 'Create'
       default_setup_check: 'Use default setup'
+    show:
+      copy_session_button: 'Copy session link'
   cards:
     form:
       write_button: 'Write a card'
