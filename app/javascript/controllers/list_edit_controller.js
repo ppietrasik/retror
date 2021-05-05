@@ -15,9 +15,10 @@ export default class extends Controller {
     this.nameTarget.focus();
   }
 
-  async exitEditMode() {
+  async exitEditMode(event) {
+    event.preventDefault();
     if(!this.editModeValue) return;
-    
+  
     this.nameTarget.readOnly = true;
     this.editModeValue = false;
 
@@ -31,6 +32,6 @@ export default class extends Controller {
 
   async _setupModeChange() {
     this.nameTarget.addEventListener("dblclick", _ => this.enterEditMode());
-    this.nameTarget.addEventListener("blur", _ => this.exitEditMode());
+    this.nameTarget.addEventListener("blur", event => this.exitEditMode(event));
   }
 }

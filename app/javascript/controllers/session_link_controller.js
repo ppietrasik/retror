@@ -6,6 +6,6 @@ export default class extends Controller {
   }
 
   get pageLink () {
-    return location.href;
+    return window.location.href;
   }
 }
