@@ -1,11 +1,24 @@
-import { createContainer, asClass, InjectionMode } from 'awilix'
 import { streamId } from '../utils/stream_id';
 import { StreamListener } from "./stream_listener";
 
-const container = createContainer({ injectionMode: InjectionMode.CLASSIC });
+class SimpleConatiner {
+  constructor() {
+    this.dependencies = new Map();
+  }
 
-container.register({
-  boardStreamListener: asClass(StreamListener).inject(() => ({ streamId: streamId })).singleton()
-})
+  register(identifier, resolver) {
+    this.dependencies.set(identifier, { resolver: resolver, store: null });
+  }
+
+  resolve(identifier) {
+    const dependency = this.dependencies.get(identifier);
+
+    dependency.store ??= dependency.resolver();
+    return dependency.store;
+  }
+}
+
+const container = new SimpleConatiner();
+container.register("boardStreamListener", _ => new StreamListener(streamId));
 
 export default container;
